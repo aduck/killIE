@@ -608,77 +608,89 @@ obj 获取样式的目标元素
 
 文件按钮美化<input type="file" />,兼容IE6+
 
-原理：通过定位把文件按钮放在button上，然后设置file按钮透明度为0
-<div class="box">
-	<input type="text" class="text" id="text"/>
-	<input type="file" class="file" onchange="document.getElementById('text').value=this.value" />
-	<input type="button" class="btn" value="选择" />
-</div>
-.box{display:inline-block;*display:inline;*zoom:1;height:30px;margin:0 auto;position:relative;}
-.text{border:1px solid #ccc;width:200px;height:30px;color:#000;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
-.btn{border:1px solid #ccc;height:30px;width:50px;color:#000;background:none;}
-.file{width:50px;font-size:10px;height:30px;position:absolute;right:0;top:0;opacity:0;filter:alpha(opacity=0);}
+  原理：通过定位把文件按钮放在button上，然后设置file按钮透明度为0
+  
+        <div class="box">
+          <input type="text" class="text" id="text"/>
+          <input type="file" class="file" onchange="document.getElementById('text').value=this.value" />
+          <input type="button" class="btn" value="选择" />
+        </div>
+        .box{display:inline-block;*display:inline;*zoom:1;height:30px;margin:0 auto;position:relative;}
+        .text{border:1px solid #ccc;width:200px;height:30px;color:#000;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+        .btn{border:1px solid #ccc;height:30px;width:50px;color:#000;background:none;}
+        .file{width:50px;font-size:10px;height:30px;position:absolute;right:0;top:0;opacity:0;filter:alpha(opacity=0);}
+        
 *在IE中无法通过width改变file的大小，只能通过设置font-size
 
 <img src="" /><input type="text" /><input type="submit" />清除默认边框兼容性写法{border:0 none;}
 
 自定义checkbox选项框
-IE6下select控件美化(*问题：箭头部分不能点击T_T)
-//js
-function reSelect(){
-	var _width;
-	$("select").each(function(){
-		$(this).wrap("<span class='s-wrap1'></span>");
-	});
-	$(".s-wrap1").each(function(){
-		$(this).wrap("<span class='s-wrap2'></span>");
-		_width=parseInt($(this).find("select").width());
-		$(this).width(_width-17+"px");
-	});
-	$(".s-wrap2").each(function(){
-		_width=parseInt($(this).find("select").width());
-		$(this).width(_width+"px");
-	});
-}
-reSelect();
-//css
-/*select*/
-.s-wrap1,.s-wrap2{display:inline-block;vertical-align:middle;}
-.s-wrap1{overflow:hidden;background:none;}
-.s-wrap2{background:#fff url(../images/xjt.png) no-repeat right center;border:1px solid #ccc;}
+
+  IE6下select控件美化(*问题：箭头部分不能点击T_T)
+  
+        //js
+        function reSelect(){
+          var _width;
+          $("select").each(function(){
+            $(this).wrap("<span class='s-wrap1'></span>");
+          });
+          $(".s-wrap1").each(function(){
+            $(this).wrap("<span class='s-wrap2'></span>");
+            _width=parseInt($(this).find("select").width());
+            $(this).width(_width-17+"px");
+          });
+          $(".s-wrap2").each(function(){
+            _width=parseInt($(this).find("select").width());
+            $(this).width(_width+"px");
+          });
+        }
+        reSelect();
+        //css
+        /*select*/
+        .s-wrap1,.s-wrap2{display:inline-block;vertical-align:middle;}
+        .s-wrap1{overflow:hidden;background:none;}
+        .s-wrap2{background:#fff url(../images/xjt.png) no-repeat right center;border:1px solid #ccc;}
 
 onchange、onpropertychange、oninput事件区别
+
 触发条件:
-onchange在对象属性发生改变，通过鼠标或键盘不是由于脚本触发，并且对象失去焦点onblur时触发
-onpropertychange是IE的专有事件，只要对象属性发生改变就会触发该事件
-oninput是非IE的事件，只有对象value值发生改变才会触发该事件
-onpropertychange BUG
+  
+  onchange在对象属性发生改变，通过鼠标或键盘不是由于脚本触发，并且对象失去焦点onblur时触发
+
+  onpropertychange是IE的专有事件，只要对象属性发生改变就会触发该事件
+  
+  oninput是非IE的事件，只有对象value值发生改变才会触发该事件
+  
+  onpropertychange BUG
 
 使用原生js获取数组元素键值
-案例：
-var lists=document.getElementsByTagName("li");
-for(var i=0;i<lists.length;i++){
-	lists[i].onmouseover=function(){
-		alert("我的键值为"+i);
-	}
-}
-//i的值一直为lists.length-1，错误，值未被保存，当函数执行时循环早已结束
-正确写法：
-var lists=document.getElementsByTagName("li");
-for(var i=0;i<lists.length;i++){
-	lists[i].index=i;  //保存键值在对应元素的index属性里  为每个对象添加对应的index属性
-	lists[i].onmouseover=function(){
-		alert("我的键值为"+this.index);
-	}
-}
+
+        var lists=document.getElementsByTagName("li");
+        for(var i=0;i<lists.length;i++){
+          lists[i].onmouseover=function(){
+            alert("我的键值为"+i);
+          }
+        }
+        //i的值一直为lists.length-1，错误，值未被保存，当函数执行时循环早已结束
+  
+  正确写法：
+  
+        var lists=document.getElementsByTagName("li");
+        for(var i=0;i<lists.length;i++){
+          lists[i].index=i;  //保存键值在对应元素的index属性里  为每个对象添加对应的index属性
+          lists[i].onmouseover=function(){
+            alert("我的键值为"+this.index);
+          }
+        }
 
 多行文字垂直居中
 文字在未知高度容器垂直居中
 line-height等于0的思考
 
 让元素高度填满屏幕方法：
-html,body{height:100%;}
-div{height:100%;}
+
+        html,body{height:100%;}
+        div{height:100%;}
 
 原生js通过类选择器获取对象
 getElementsByClassName() 兼容IE9+
